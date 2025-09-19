@@ -2446,6 +2446,9 @@ override_iterator_severity (iterator_t *);
 const char*
 override_iterator_new_severity (iterator_t *);
 
+int
+override_in_use (override_t);
+
 
 /* System reports. */
 

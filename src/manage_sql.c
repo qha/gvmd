@@ -31241,6 +31241,34 @@ override_iterator_nvt_type (iterator_t *iterator)
 }
 
 /**
+ * @brief Check whether an override is in use.
+ *
+ * @param[in]  override  Override.
+ *
+ * @return 1 yes, 0 no.
+ */
+int
+override_in_use (override_t override)
+{
+  return !!sql_int ("SELECT count(*) from overrides"
+                    " INNER JOIN results ON overrides.nvt = results.nvt"
+                    "   AND (overrides.hosts IS NULL"
+                    "        OR hosts_contains(overrides.hosts, results.host))"
+                    "   AND (overrides.port IS NULL"
+                    "        OR overrides.port = results.port)"
+                    "   AND (overrides.severity IS NULL"
+                    "        OR overrides.severity <= results.severity)"
+                    "   AND (overrides.task = 0 "
+                    "        OR overrides.task = results.task)"
+                    "   AND (overrides.result = 0"
+                    "        OR overrides.result = results.id)"
+                    " WHERE overrides.id = %llu"
+                    "   AND (end_time = 0"
+                    "        OR end_time >= m_now())",
+                    override);
+}
+
+/**
  * @brief Get the severity from an override iterator.
  *
  * @param[in]  iterator  Iterator.

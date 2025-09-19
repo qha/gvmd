@@ -8909,7 +8909,7 @@ buffer_override_xml (GString *buffer, iterator_t *overrides,
       buffer_xml_append_printf
         (buffer,
          "<writable>1</writable>"
-         "<in_use>0</in_use>"
+         "<in_use>%i</in_use>"
          "<active>%i</active>"
          "<end_time>%s</end_time>"
          "<text>%s</text>"
@@ -8921,6 +8921,7 @@ buffer_override_xml (GString *buffer, iterator_t *overrides,
          "<new_severity>%s</new_severity>"
          "<task id=\"%s\"><name>%s</name><trash>%i</trash></task>"
          "<orphan>%i</orphan>",
+         override_in_use ((override_t) get_iterator_resource (overrides)),
          override_iterator_active (overrides),
          end_time > 1 ? iso_time (&end_time) : "",
          override_iterator_text (overrides),
